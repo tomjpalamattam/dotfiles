@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu>
+    <menu id="root-menu" label="OpenBox 3">
+        <menu id="1" label="Development">
+            <item label="Geany"> <action name="Execute">
+                <execute>geany</execute>
+            </action> </item>
+            <item label="IDLE (Python IDE)"> <action name="Execute">
+                <execute>idle</execute>
+            </action> </item>
+            <item label="Python"> <action name="Execute">
+                <execute>xterm -e python</execute>
+            </action> </item>
+            <item label="Python (v2.7)"> <action name="Execute">
+                <execute>xterm -e python2.7</execute>
+            </action> </item>
+        </menu>
+        <menu id="2" label="Editors">
+            <item label="Nano"> <action name="Execute">
+                <execute>xterm -e nano</execute>
+            </action> </item>
+        </menu>
+        <menu id="18" label="Games">
+            <menu id="9" label="Adventure">
+                <item label="Sclient"> <action name="Execute">
+                    <execute>sclient</execute>
+                </action> </item>
+            </menu>
+            <menu id="10" label="Arcade">
+                <item label="PacMan"> <action name="Execute">
+                    <execute>pacman</execute>
+                </action> </item>
+            </menu>
+        </menu>
+        <menu id="7" label="Multimedia">
+            <item label="ALSA mixer"> <action name="Execute">
+                <execute>xterm -e alsamixer</execute>
+            </action> </item>
+            <item label="PulseAudio Volume Control"> <action name="Execute">
+                <execute>pavucontrol</execute>
+            </action> </item>
+            <item label="Volume Icon"> <action name="Execute">
+                <execute>volumeicon</execute>
+            </action> </item>
+        </menu>
+        <menu id="5" label="Network">
+            <item label="Avahi SSH Server Browser"> <action name="Execute">
+                <execute>bssh</execute>
+            </action> </item>
+            <item label="Avahi VNC Server Browser"> <action name="Execute">
+                <execute>bvnc</execute>
+            </action> </item>
+            <item label="Brave"> <action name="Execute">
+                <execute>brave</execute>
+            </action> </item>
+            <item label="TkVNC"> <action name="Execute">
+                <execute>xterm -e tkvnc</execute>
+            </action> </item>
+        </menu>
+        <menu id="19" label="Shells">
+            <item label="File Manager PCManFM"> <action name="Execute">
+                <execute>pcmanfm</execute>
+            </action> </item>
+            <item label="GIT"> <action name="Execute">
+                <execute>xterm -e git</execute>
+            </action> </item>
+            <item label="ranger"> <action name="Execute">
+                <execute>xterm -e ranger</execute>
+            </action> </item>
+            <item label="Terminator"> <action name="Execute">
+                <execute>terminator</execute>
+            </action> </item>
+            <item label="UXTerm"> <action name="Execute">
+                <execute>uxterm</execute>
+            </action> </item>
+            <item label="Xterm"> <action name="Execute">
+                <execute>xterm</execute>
+            </action> </item>
+        </menu>
+        <menu id="37" label="System">
+            <menu id="36" label="Settings">
+                <menu id="21" label="GNOME">
+                    <item label="Advanced Network Configuration"> <action name="Execute">
+                        <execute>nm-connection-editor</execute>
+                    </action> </item>
+                    <item label="Bluetooth Manager"> <action name="Execute">
+                        <execute>blueman-manager</execute>
+                    </action> </item>
+                </menu>
+                <menu id="35" label="Xfce">
+                    <item label="Bluetooth Adapters"> <action name="Execute">
+                        <execute>blueman-adapters</execute>
+                    </action> </item>
+                </menu>
+                <item label="Customize Look and Feel"> <action name="Execute">
+                    <execute>lxappearance</execute>
+                </action> </item>
+                <item label="Desktop Preferences"> <action name="Execute">
+                    <execute>pcmanfm --desktop-pref</execute>
+                </action> </item>
+                <item label="nitrogen"> <action name="Execute">
+                    <execute>nitrogen</execute>
+                </action> </item>
+                <item label="NVIDIA X Server Settings"> <action name="Execute">
+                    <execute>nvidia-settings</execute>
+                </action> </item>
+                <item label="Openbox Configuration Manager"> <action name="Execute">
+                    <execute>obconf</execute>
+                </action> </item>
+                <item label="Preferred Applications"> <action name="Execute">
+                    <execute>libfm-pref-apps</execute>
+                </action> </item>
+                <item label="Tint2 Settings"> <action name="Execute">
+                    <execute>tint2conf</execute>
+                </action> </item>
+            </menu>
+            <item label="Avahi Zeroconf Browser"> <action name="Execute">
+                <execute>avahi-discover</execute>
+            </action> </item>
+            <item label="Htop"> <action name="Execute">
+                <execute>xterm -e htop</execute>
+            </action> </item>
+            <item label="pstree"> <action name="Execute">
+                <execute>xterm -e /usr/bin/pstree.x11</execute>
+            </action> </item>
+            <item label="pstree"> <action name="Execute">
+                <execute>xterm -e pstree</execute>
+            </action> </item>
+            <item label="Pstree"> <action name="Execute">
+                <execute>xterm -e pstree.x11</execute>
+            </action> </item>
+            <item label="Tint2"> <action name="Execute">
+                <execute>tint2</execute>
+            </action> </item>
+            <item label="Top"> <action name="Execute">
+                <execute>xterm -e top</execute>
+            </action> </item>
+        </menu>
+        <menu id="38" label="Utilities">
+            <item label="Archive Manager"> <action name="Execute">
+                <execute>file-roller</execute>
+            </action> </item>
+            <item label="Info"> <action name="Execute">
+                <execute>xterm -e info</execute>
+            </action> </item>
+            <item label="picom"> <action name="Execute">
+                <execute>picom</execute>
+            </action> </item>
+        </menu>
+        <separator/>
+        <menu id="40" label="OpenBox">
+            <menu id="client-list-menu"/>
+            <item label="Reconfigure"> <action name="Reconfigure"/> </item>
+            <separator/>
+            <item label="Exit"> <action name="Exit"/> </item>
+        </menu>
+    </menu>
+</openbox_menu>
+<menu execute="~/.config/openbox/obamenu.py" id="My Menu" label="Applications" />
