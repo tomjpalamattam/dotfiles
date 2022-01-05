@@ -27,7 +27,6 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks (avoidStruts, docksStartupHook, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.EwmhDesktops -- to show workspaces in application switchers#9d9d9d
 import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog,  doFullFloat, doCenterFloat, doRectFloat)
-import XMonad.Hooks.Place (placeHook, withGaps)
 import XMonad.Hooks.UrgencyHook
 
 -- actions
@@ -43,18 +42,32 @@ import XMonad.Layout.Tabbed
 import XMonad.Layout.GridVariants
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.BinarySpacePartition
-import XMonad.Layout.Gaps
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.SimplestFloat
 import Data.Maybe (fromJust)
 import XMonad.Layout.SimplestFloat
+import XMonad.Layout.TwoPanePersistent
 import XMonad.Layout.TwoPane
+import XMonad.Hooks.InsertPosition as H
+import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
+import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
+import XMonad.Actions.MouseResize
+import XMonad.Layout.MultiToggle (mkToggle, single, EOT(EOT), (??))
+import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, MIRROR, NOBORDERS))
+import XMonad.Layout.LayoutCombinators
+import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
+import XMonad.Actions.WithAll (sinkAll, killAll)
+import XMonad.Layout.TrackFloating
+import XMonad.Hooks.RefocusLast
+import XMonad.Hooks.Place
+import XMonad.Hooks.FloatNext
+
 ------------------------------------------------------------------------
 -- variables
 ------------------------------------------------------------------------
---myGaps = gaps [(U, gap),(D, gap),(L, gap),(R, gap)]
+--myGaps = gaps [(U, 5),(D, 10),(L, 5),(R, 6)]
 myModMask = mod4Mask -- Sets modkey to super/windows key
-myTerminal = "terminator" -- Sets default terminal
+myTerminal = "alacritty" -- Sets default terminal
 myBorderWidth = 1 -- Sets border width for windows
 myNormalBorderColor = "#34495e"
 
@@ -65,9 +78,10 @@ myppHidden = "#268bd2"
 myppHiddenNoWindows = "#93A1A1"
 myppTitle = "#FDF6E3"
 myppUrgent = "#DC322F"
-myWorkspaces = ["1","2","3","4","5","6","7", "8", "9"]
+myWorkspaces = ["1","2","3","4","5","6","7", "8", "9"] ++ ["NSP"]
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
+
 
 ------------------------------------------------------------------------
 -- desktop notifications -- dunst package required
@@ -83,21 +97,38 @@ instance UrgencyHook LibNotifyUrgencyHook where
         safeSpawn "notify-send" [show name, "workspace " ++ idx]
 
 ------------------------------------------------------------------------
+-- Scratchpad
+------------------------------------------------------------------------
+
+
+scratchpads = [
+
+
+    NS "obs" "obs" (className =? "obs") nonFloating
+ ]
+------------------------------------------------------------------------
 -- Startup hook
 ------------------------------------------------------------------------
 
 myStartupHook = do
     spawnOnce "nitrogen --restore &"
     spawnOnce "dunst &"
-    spawnOnce "mailspring --daemon &"
+    spawnOnce "sleep 4 && mailspring -b &"
     spawnOnce "stalonetray"
     spawnOnce "picom --config ~/.config/picom/picom.conf --backend glx --experimental-backends &"
     spawnOnce "nm-applet &"
     spawnOnce "volumeicon &"
     spawnOnce "blueman-applet &"
-    spawnOnce "copyq &"
-
-
+    spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
+    spawnOnce "pcmanfm -d &"
+    spawnOnce "sleep 4 && cd /home/tom/Desktop/launchers/pcmanfm && sh pcmanfm.sh && sleep 1 && xdotool key super+shift+c"
+    spawnOnce "sh /home/tom/.config/openbox/mega.sh"
+    spawnOnce "sh /home/tom/.config/openbox/onedrive.sh"
+    spawnOnce "greenclip daemon &"
+    spawnOnce "kdeconnect-indicator &"
+    spawnOnce "sleep 4 && joplin-desktop &"
+    spawnOnce "conky -c ~/.harmattan-themes/Transparent/God-Mode/.conkyrc &"
+    spawnOnce "redshift-gtk &"
 
 ------------------------------------------------------------------------
 -- layout
@@ -107,72 +138,77 @@ mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spaci
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 mySpacing' :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
--- end spacing
--- myLayout = avoidStruts (tiled ||| grid ||| bsp ||| simpleTabbed ||| htall ||| vtall ||| centered ||| floats)
---myLayout = avoidStruts (tiled ||| grid |||  simpleTabbed)
 
---myLayout = avoidStruts (tiled ||| grid ||| tabbed shrinkText myTabConfig ||| Full)
-myLayout = avoidStruts (tiled ||| grid ||| tabbz ||| noBorders Full ||| floatingm ||| twoP)
+myLayout = avoidStruts $ refocusLastLayoutHook $ trackFloating $ mouseResize $ windowArrange $ T.toggleLayouts (floating) $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) (tiled ||| grid ||| tabs ||| noBorders Full ||| floating ||| twoP ||| twoPP ||| twoPPV)
   where
      -- tiled
      tiled = renamed [Replace "Tall"]
           -- $ spacingRaw True (Border 10 0 10 0) True (Border 0 10 0 10) True
-      $ mySpacing 1
-           $ ResizableTall 1 (3/100) (1/2) []
+      $ mySpacing 0
+      $ smartBorders
+           $ limitWindows 6
+           $ ResizableTall 1 (3/100) (1/2) []    -- '1' is nmaster '3/100' is delta and '1/2' is ratio
 
 
      -- grid
      grid = renamed [Replace "Grid"]
         --  $ spacingRaw True (Border 10 0 10 0) True (Border 0 10 0 10) True
-      $ mySpacing 1
+      $ mySpacing 0
+      $ smartBorders
+      $ limitWindows 6
           $ Grid (16/10)
      -- bsp
      bsp = renamed [Replace "BSP"]
       $ mySpacing 1
+      $ limitWindows 6
          $ emptyBSP
+         
 
      -- vtall
      vtall = renamed [Replace "vtall"]
       $ mySpacing 3
+      $ smartBorders
+      $ limitWindows 6
          $ ResizableTall 1 (3/100) (1/2) []
 
 
      -- htall
      htall = renamed [Replace "htall"]
       $ mySpacing 2
+      $ limitWindows 6
          $ Mirror vtall
 
      -- centered
      centered = renamed [Replace "centered"]
       $ mySpacing 6
+      $ smartBorders
+      $ limitWindows 6
          $ ThreeColMid 1 (3/100) (1/2)
 
      -- float
-     floatingm = renamed [Replace "floatingm"] simplestFloat
-
+     floating = renamed [Replace "Floating"] simplestFloat
+    --  $ layoutHintsWithPlacement (1, 1) (simplestFloat) 
+            
      -- twoP
      twoP = renamed [Replace "twoP"]
       $ TwoPane (3/100) (1/2)
-
+   
+     -- twoPPersistent
+     twoPP = renamed [Replace "twoPP"]
+      $ smartBorders
+      $ TwoPanePersistent Nothing (3/100) (1/2)
+      
+      
+     -- twoPPersistentVertical
+     twoPPV = renamed [Replace "twoPPV"]
+      $ smartBorders
+      $ Mirror twoPP
+      
      -- tabs
-     tabbz = renamed [Replace "tabbz"]
+     tabs = renamed [Replace "Tabs"]
       $ tabbed shrinkText myTabConfig
+      
 
- --    floats = renamed [Replace "floats"]
-  -- $ simplestFloat
-
-
---     simpleTabbed = renamed [Replace "simpleTabbed"]
-
-     -- The default number of windows in the master pane
-     nmaster = 1
-
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
-
-     -- Percent of screen to increment by when resizing panes
-
-     delta   = 3/100
 
 -- Fonts
 myFont :: String
@@ -206,8 +242,8 @@ myManageHook = composeAll
     , className =? "yad"           --> doFloat
     , className =? "Lutris"           --> doFloat
     , title =? "Picture in picture"           --> doFloat
+    , title =? "Execute File"           --> doFloat
     , className =? "MATLAB R2021a - academic use"           --> doFloat
-    , className =? "sun-awt-X11-XFramePee"           --> doFloat
     , className =? "sun-awt-X11-XFramePeer"       --> doFloat
     , className =? "Scilab"           --> doFloat
     , className =? "nitrogen"       --> doFloat
@@ -233,32 +269,51 @@ myKeys =
      , ("M-<Right>", sendMessage Expand)
      , ("M-<Down>", sendMessage MirrorShrink)
      , ("M-s", sendMessage ToggleStruts)
-     , ("M-S-f", sendMessage $ JumpToLayout "floatingm")
+     , ("M-S-f", sendMessage $ JumpToLayout "Floating")
      , ("M-f", sendMessage $ JumpToLayout "Full")
      , ("M-t", sendMessage $ JumpToLayout "Tall")
      , ("M-g", sendMessage $ JumpToLayout "Grid")
-     , ("M-b", sendMessage $ JumpToLayout "twoP")
-     , ("M-S-b", sendMessage $ JumpToLayout "tabbz")
- --    , ("M-,", spawn "rofi -show drun") -- rofi
-     , ("M-e", sendMessage $ ToggleGaps)  -- toggle all gaps
+     , ("M-b", sendMessage $ JumpToLayout "twoPP")
+     , ("M-v", sendMessage $ JumpToLayout "twoPPV")
+     , ("M-S-b", sendMessage $ JumpToLayout "Tabs")
+     , ("M-C-v", sequence_ [windows W.focusDown,  sinkAll ]) --combine two actions
+
+     , ("C-S-<Down>", decWindowSpacing 4)         -- Decrease window spacing
+     , ("C-S-<Up>", incWindowSpacing 4)         -- Increase window spacing
+     , ("C-S-<Left>", decScreenSpacing 4)         -- Decrease screen spacing
+     , ("C-S-<Right>", incScreenSpacing 4)         -- Increase screen spacing
 
      , ("C-p", spawn "pcmanfm") -- rofi
-  --   , ("M-S-<Return>", spawn "") -- to disable default config
-     , ("M-S-<Down>", windows W.focusDown) -- rofi
-     , ("M-S-<Up>", windows W.focusUp) -- rofi
--- other possible keybindings: windows W.focusMaster, windows W.swapMaster, windows W.swapUp
+     , ("M-p", spawn "/home/tom/.config/rofi/RofiFtw/execute-me.sh") --
+     , ("M-S-g", spawn "/home/tom/.config/rofi/RofiFtw/rofi-search.sh") --
+     , ("M-S-p", spawn "/home/tom/.config/rofi/launchers/search.sh") --  
+     , ("M-S-s", spawn "/home/tom/.config/rofi/applets/applets/screenshot.sh") -- 
+     , ("M-S-h", spawn "/home/tom/.config/rofi/launchers/clipboard.sh") -- 
+     , ("C-<Space>", spawn "dunstctl history-pop") -- 
+     , ("C-S-<Space>", spawn "dunstctl close-all") --      
+     , ("M-S-<Down>", windows W.focusDown) -- move focus down
+     , ("M-S-<Up>", windows W.focusUp) -- move focus up  
      , ("C-k", spawn "xkill") -- rofi
-     , ("C-r", spawn "terminator -e ranger") -- rofi
-     , ("C-b", spawn "brave") -- rofi
-     , ("C-n", spawn "brave --incognito") -- rofi
---     , ("M-S-l", spawn "i3lock-fancy-rapid 8 3") -- lockscreen
-     , ("<XF86MonBrightnessUp>", spawn "lux -a 10%") -- rofi
-     , ("<XF86MonBrightnessDown>", spawn "lux -s 10%") -- rofi
+     , ("C-S-r", toggleFloatAllNew) -- rofi
+     , ("C-b", spawn "brave --enable-features=VaapiVideoDecoder --use-gl=egl") -- rofi
+     , ("C-n", spawn "brave --incognito --enable-features=VaapiVideoDecoder --use-gl=egl") -- rofi
+     , ("<XF86MonBrightnessUp>", spawn "cd ~/.xmonad/ && ./brightness.sh up") -- rofi
+     , ("<XF86MonBrightnessDown>", spawn "cd ~/.xmonad/ && ./brightness.sh down") -- rofi
      , ("<XF86AudioLowerVolume>", spawn "cd ~/.xmonad/ && ./volume.sh down") -- rofi
      , ("<XF86AudioRaiseVolume>", spawn "cd ~/.xmonad/ && ./volume.sh up") -- rofi
-     , ("<XF86AudioMute>", spawn "amixer sset Master toggle") -- rofi
+     , ("<XF86AudioMute>", spawn "cd ~/.xmonad/ && ./volume.sh toggle") -- rofi
      , ("<XF86AudioMicMute>", spawn "amixer sset Capture toggle") -- rofi
      , ("S-M-t", withFocused $ windows . W.sink) -- flatten floating window to tiled
+     , ("M-C-<Up>", increaseLimit)                   -- Increase # of windows
+     , ("M-C-<Down>", decreaseLimit)   
+     , ("M-S-u", sinkAll)                       -- Push ALL floating windows to tile
+     , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
+     , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
+     , ("M-<Return>", windows W.swapMaster) -- Move focus to the master window
+     , ("M-h", spawn "")     
+     , ("M-j", spawn "") 
+     , ("M-k", spawn "")   
+     , ("M-C-o", namedScratchpadAction scratchpads "obs")         
     ]
 
 -- Mouse bindings: default actions bound to mouse events
@@ -283,21 +338,10 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- main
 ------------------------------------------------------------------------
 
-main = do
-    xmproc <- spawnPipe "xmobar"
-    xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh desktopConfig
-        { manageHook = manageDocks <+> myManageHook <+> manageHook desktopConfig
-        , startupHook        = myStartupHook
-        , layoutHook         = myLayout
-        , handleEventHook    = handleEventHook desktopConfig
-        , workspaces         = myWorkspaces
-        , borderWidth        = myBorderWidth
-        , terminal           = myTerminal
-        , modMask            = myModMask
-        , normalBorderColor  = myNormalBorderColor
-        , focusedBorderColor = myFocusedBorderColor
-        , logHook = dynamicLogWithPP xmobarPP
-                        {  ppOutput = hPutStrLn xmproc
+myPlacement                = inBounds (underMouse (0.5,0.5))
+
+mylogHook h = dynamicLogWithPP $ xmobarPP
+                        {  ppOutput = hPutStrLn h
                         , ppCurrent = xmobarColor myppCurrent "" . wrap "[" "]" -- Current workspace in xmobar
                         , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
                         , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable -- Hidden workspaces
@@ -307,6 +351,21 @@ main = do
                         , ppUrgent = xmobarColor  myppUrgent "" . wrap "!" "!"  -- Urgent workspace
                         , ppExtras  = [windowCount]                           -- # of windows current workspace
                         , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
-                        } >> updatePointer (0.25, 0.25) (0.25, 0.25)
+                        } 
+
+main = do
+    xmproc <- spawnPipe "xmobar"
+    xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh desktopConfig
+        { manageHook = manageDocks <+> myManageHook <+> manageHook desktopConfig <+> placeHook myPlacement <+> floatNextHook <+> namedScratchpadManageHook scratchpads
+        , startupHook        = myStartupHook
+        , handleEventHook    = handleEventHook desktopConfig
+        , workspaces         = myWorkspaces
+        , borderWidth        = myBorderWidth
+        , terminal           = myTerminal
+        , mouseBindings      = myMouseBindings
+        , modMask            = myModMask
+        , normalBorderColor  = myNormalBorderColor
+        , focusedBorderColor = myFocusedBorderColor
+        , logHook = mylogHook xmproc >> updatePointer (0.25, 0.25) (0.25, 0.25) --update pointer might create issue with window switching when used with floating windows
           }
           `additionalKeysP` myKeys
