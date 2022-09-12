@@ -79,6 +79,7 @@ import XMonad.Layout.WindowNavigation --used with sublayouts
 import XMonad.Layout.Simplest --used with sublayout simplest, however buggy.
 --import XMonad.Actions.WithAll --used with sublayouts --used to send tabbed groups of sublayouts to other workspaces with keyboard shortcuts.
 import XMonad.Actions.NoBorders -- to toggle border, use it with keyboard shortcut "withFocused toggleBorder".
+--import XMonad.Actions.EasyMotion (selectWindow, EasyMotionConfig(..), textSize) --let you select a window to perform an action. used with keyboard shortcut "selectWindow def". 
 
 -------------------------------------------------------------------------
 -- XMonad.Layout.Simplest can be used like can be used like
@@ -483,10 +484,10 @@ myKeys =
      , ("M-C-o", namedScratchpadAction scratchpads "obs") 
      , ("M-=",   sendMessage MagnifyMore)
      , ("M--",   sendMessage MagnifyLess)               
- --  , ("M-C-q", withFocused $ makeDynamicSP "dyn1") --make focused window to scratchpad named dyn1 --deprecated
- --  , ("M-C-w",  spawnDynamicSP "dyn1") -- bring dyn1 scratchpad window --deprecated
- --  , ("M-C-e", withFocused $ makeDynamicSP "dyn2") --make focused window to scratchpad named dyn2 --deprecated
- --  , ("M-C-r",  spawnDynamicSP "dyn2") -- bring dyn2 scratchpad window --deprecated
+ --    , ("M-C-q", withFocused $ makeDynamicSP "dyn1") --make focused window to scratchpad named dyn1 --deprecated
+ --    , ("M-C-w",  spawnDynamicSP "dyn1") -- bring dyn1 scratchpad window --deprecated
+ --    , ("M-C-e", withFocused $ makeDynamicSP "dyn2") --make focused window to scratchpad named dyn2 --deprecated
+ --    , ("M-C-r",  spawnDynamicSP "dyn2") -- bring dyn2 scratchpad window --deprecated
      , ("M-C-q", withFocused $ toggleDynamicNSP "dyn1")
      , ("M-C-w",  dynamicNSPAction "dyn1") 
      , ("M-C-e", withFocused $ toggleDynamicNSP "dyn2")
@@ -507,6 +508,8 @@ myKeys =
      , ("M-C-=", XMonad.Layout.BoringWindows.focusDown) -- this will help to skip sublayot when cycling windows -- used with sublayouts
      , ("M-C--", XMonad.Layout.BoringWindows.focusUp) -- this will help to skip sublayot when cycling windows -- used with sublayouts
      , ("M-C-s", withFocused toggleBorder) -- to toggle border. needs XMonad.Actions.NoBorders     
+  --   , ("M-C-f", selectWindow def{txtCol="Green", cancelKey=xK_Escape, overlayF=textSize} >>= (`whenJust` windows . W.focusWindow))      
+  --   , ("M-S-a", selectWindow def{txtCol="Red", cancelKey=xK_Escape, overlayF=textSize} >>= (`whenJust` windows . W.focusWindow))  
     ]
 
 -- Mouse bindings: default actions bound to mouse events
