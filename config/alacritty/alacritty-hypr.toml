@@ -1,0 +1,21 @@
+[font]
+size = 10
+
+[font.bold]
+family = "jetBrains Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "jetBrains Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "jetBrains Mono"
+style = "Italic"
+
+[font.normal]
+family = "jetBrains Mono"
+style = "Regular"
+
+[window]
+opacity = 0.9
