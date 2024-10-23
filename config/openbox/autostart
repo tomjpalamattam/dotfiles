@@ -1,0 +1,40 @@
+#
+# These things are run when an Openbox X Session is started.
+# You may place a similar script in $HOME/.config/openbox/autostart
+# to run user-specific things.
+#
+
+# If you want to use GNOME config tools...
+#
+#if test -x /usr/lib/openbox/gnome-settings-daemon >/dev/null; then
+#  /usr/lib/openbox/gnome-settings-daemon &
+#elif which gnome-settings-daemon >/dev/null 2>&1; then
+#  gnome-settings-daemon &
+#fi
+
+# If you want to use XFCE config tools...
+#
+redshift-gtk &
+joplin-desktop &
+#conky -c ~/.harmattan-themes/Transparent/God-Mode/.conkyrc2 &
+#sleep 2 && sh /home/tom/.config/openbox/mega.sh --recheck &
+sh /home/tom/.config/openbox/cloud/cloud-sync.sh --recheck &
+#sleep 4 && sh /home/tom/Desktop/launchers/pcmanfm/pcmanfm.sh && sleep 0.1 && xdotool key super+shift+c &
+tint2 &
+nitrogen --restore &
+#dunst &
+blueman-applet &
+picom --config ~/.config/picom/picom.conf --backend glx &
+#picom --backend glx --experimental-backends --xrender-sync-fence &
+nm-applet &
+volumeicon &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+pcmanfm --desktop &
+#rclone --vfs-cache-mode writes mount Mega-files: ~/Mega-files & --recheck
+greenclip daemon &
+#com.getmailspring.Mailspring -b &
+sleep 4 && mailspring -b &
+#kdeconnect-indicator &
+#sleep 1 && sh /home/tom/.config/openbox/onedrive.sh --recheck
+sh /home/tom/.config/deadd/deadd-xmonad.sh &
+
