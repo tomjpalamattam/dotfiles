@@ -1,0 +1,205 @@
+/* Notification center */
+
+/* 
+.blurredBG, main_window, .blurredBG.low, .blurredBG.normal {
+    background: rgba(0, 0, 0, 0.5);
+    color: #000;
+    font-size: 12px;
+}
+
+*/
+
+/* Notification center */
+
+.blurredBG {
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+}
+
+
+main_window {
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+}
+
+.blurredBG.low {
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+}
+
+.blurredBG.normal {
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+}
+
+.noti-center.time {
+    font-size: 32px;
+    text-shadow: none;
+}
+
+/* Notifications */
+
+.notification.content {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.appname {
+    font-size: 12px;
+}
+
+.time {
+    font-size: 12px;
+}
+
+.blurredBG.notification {
+    background:  rgba(0, 0, 0, 0.4);
+}
+
+.blurredBG.notification.critical {
+    background: rgba(255, 0, 0, 0.5);
+}
+
+.notificationInCenter.critical {
+    background: rgba(155, 0, 20, 0.5);
+}
+
+/* Labels */
+
+label {
+    color: #fff;
+    text-shadow: none;
+}
+
+label.notification {
+    color: #fff;
+    text-shadow: none;
+}
+
+label.critical {
+    color: #000;
+    text-shadow: none;
+}
+.notificationInCenter label.critical {
+    color: #000;
+    text-shadow: none;
+}
+
+
+/* Buttons */
+
+button {
+    background: transparent;
+    color: #fff;
+    border-radius: 3px;
+    border-width: 0px;
+    background-position: 0px 0px;
+    text-shadow: none;
+}
+
+button:hover {
+    border-radius: 3px;
+    background: rgba(0, 20, 20, 0.2);
+    border-width: 0px;
+    border-top: transparent;
+    border-color: #f00;
+    color: #fee;
+}
+
+
+/* Notification centre buttons */
+
+/* Custom Buttons */
+
+/*  Note: The buttons are not like state1 is "on" and state 2 is "off". The normal button color and label is off status and it has state1 on-status and state 2 on-status */
+
+/* 
+Set the state of a user defined button (in this example the first button, which has id 0):
+
+# turn highlighting on (on status 1)
+notify-send.py a --hint boolean:deadd-notification-center:true \
+               int:id:0 boolean:state:true type:string:buttons
+
+# turn highlighting off (off status)
+notify-send.py a --hint boolean:deadd-notification-center:true \
+               int:id:0 boolean:state:false type:string:buttons 
+
+Note: The above command only sets state 1 status and not state 2.
+Note: The state 2 on status is activated when you click it, but it wont turn off when you click it again.
+Note:simply put, state 1 is activated by command and state 2 through clicking it
+Note: The hover labelling color below does not work for both state 1 and state 2
+
+*/
+
+
+
+/*  OFF STATE: */
+
+.userbutton {
+    background: rgba(200,200,200, 0.15);
+}
+
+.userbuttonlabel {
+    color: #fff;
+    font-size: 25px;
+	margin-left: 25px;
+/*    margin-top: 15px; */
+    margin-bottom: 15px;    
+}
+
+.userbutton:hover {
+    background: rgba(20, 0, 0, 0.2);
+}
+
+.userbuttonlabel:hover {
+    color: #111;
+}
+
+/*  ON STATE 1: */
+button.buttonState1 {
+    background: rgba(255,255,255,0.3);
+}
+
+.userbuttonlabel.buttonState1 {
+    color: #fff;
+}
+
+button.buttonState1:hover {
+    background: rgba(20,0,0, 0.3);
+}
+
+/*    This does not work */
+.userbuttonlabel.buttonState1:hover {
+    color: #111;
+}
+
+/*  ON STATE 2: */
+
+button.buttonState2 {
+    background: rgba(255,255,255,0.3);
+}
+
+.userbuttonlabel.buttonState2 {
+    color: #fff;
+}
+
+button.buttonState2:hover {
+    background: rgba(20,0,0, 0.3);
+}
+
+/*    This does not work */
+.userbuttonlabel.buttonState2:hover {
+    color: #111;
+}
+
+
+/* Images */
+
+image.deadd-noti-center.notification.image {
+    margin-left: 20px;
+}
