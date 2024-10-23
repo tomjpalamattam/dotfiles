@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-panel" version="1.0">
+  <property name="configver" type="int" value="2"/>
+  <property name="panels" type="array">
+    <value type="int" value="1"/>
+    <property name="dark-mode" type="bool" value="true"/>
+    <property name="panel-1" type="empty">
+      <property name="position" type="string" value="p=2;x=1882;y=12"/>
+      <property name="length" type="double" value="1"/>
+      <property name="position-locked" type="bool" value="true"/>
+      <property name="icon-size" type="uint" value="0"/>
+      <property name="size" type="uint" value="29"/>
+      <property name="plugin-ids" type="array">
+        <value type="int" value="6"/>
+      </property>
+      <property name="enable-struts" type="bool" value="false"/>
+      <property name="length-adjust" type="bool" value="true"/>
+      <property name="enter-opacity" type="uint" value="100"/>
+      <property name="leave-opacity" type="uint" value="100"/>
+      <property name="background-style" type="uint" value="1"/>
+      <property name="background-rgba" type="array">
+        <value type="double" value="0"/>
+        <value type="double" value="0"/>
+        <value type="double" value="0"/>
+        <value type="double" value="1"/>
+      </property>
+      <property name="nrows" type="uint" value="1"/>
+    </property>
+  </property>
+  <property name="plugins" type="empty">
+    <property name="plugin-6" type="string" value="systray">
+      <property name="square-icons" type="bool" value="true"/>
+      <property name="known-items" type="array">
+        <value type="string" value="strawberry"/>
+        <value type="string" value="tray-id"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="chrome_status_icon_1"/>
+        <value type="string" value="steam"/>
+        <value type="string" value="blueman"/>
+        <value type="string" value="redshift"/>
+      </property>
+      <property name="known-legacy-items" type="array">
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (82%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (84%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (83%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (75%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (97%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (94%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (95%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (72%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (67%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (77%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (100%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (71%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (90%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (89%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (92%)"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (75%)"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (78%)"/>
+        <value type="string" value="portproton"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (63%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (79%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (70%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (80%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (73%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (74%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (69%)"/>
+        <value type="string" value="wi-fi network connection “fritz!box 7590 yj” active: fritz!box 7590 yj (68%)"/>
+        <value type="string" value="sunshine"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (84%)"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (73%)"/>
+        <value type="string" value="user authentication required for wi-fi network “upcb37982c”…"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (74%)"/>
+        <value type="string" value="yad"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (65%)"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (66%)"/>
+        <value type="string" value="requesting a wi-fi network address for “upcb37982c”…"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (67%)"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (68%)"/>
+        <value type="string" value="configuring wi-fi network connection “upcb37982c”…"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (72%)"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (69%)"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (76%)"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (70%)"/>
+        <value type="string" value="steam"/>
+        <value type="string" value="mailspring"/>
+        <value type="string" value="wi-fi network connection “upcb37982c” active: upcb37982c (71%)"/>
+        <value type="string" value="redshift-gtk"/>
+      </property>
+      <property name="single-row" type="bool" value="true"/>
+      <property name="icon-size" type="int" value="22"/>
+      <property name="hide-new-items" type="bool" value="false"/>
+    </property>
+  </property>
+</channel>

@@ -1,0 +1,10 @@
+Install swaync and paywal:
+paru -S swaync python-pywal
+
+Generate '.cache/wal' folder from using command 'wal -i "/path/to/img.jpg"'
+
+
+
+Sample Configs:
+https://github.com/zDyanTB/HyprNova
+https://github.com/arfan-on-clouds/hyprclouds/tree/main/config/swaync
